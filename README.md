@@ -1,7 +1,7 @@
 # Student Wallet (PWA + Supabase) - bản tối ưu điện thoại
 
 ## Cấu trúc thư mục
-index.html, sw.js, manifest.webmanifest, config.js, icons/ (4 ảnh), schema.sql, schema_update.sql
+index.html, avalanche-bridge.js, StudentGroupVaultV2.sol, StudentGroupVaultV3.sol, sw.js, manifest.webmanifest, config.js, icons/, schema.sql, schema_update.sql, schema_groups_secure.sql
 
 ## Cài đặt (lần đầu)
 1. Supabase > SQL Editor: chạy `schema.sql` (hoặc `schema_update.sql` nếu đã chạy schema.sql trước đó).
@@ -12,7 +12,7 @@ index.html, sw.js, manifest.webmanifest, config.js, icons/ (4 ảnh), schema.sql
 Code dùng thêm các bảng `groups`, `group_members`, `group_budgets`, `group_expenses`, `user_profiles`. Chạy `schema_groups_secure.sql` trong Supabase > SQL Editor để tạo/bổ sung các bảng này cùng chính sách bảo mật (RLS), giới hạn sửa 3 lần ở server và các cột Blockchain. File chạy lại nhiều lần được.
 
 ## Cập nhật app
-Mỗi lần sửa code, tăng số phiên bản `V` trong sw.js (hiện là `sw-v22`) rồi tải lại lên Netlify.
+Mỗi lần sửa code, tăng số phiên bản `V` trong sw.js (hiện là `sw-v26`) rồi tải lại lên Netlify.
 
 ## Trên điện thoại
 - Dưới 860px: thanh menu dưới cùng (Tổng quan, Lịch sử, nút + , Ngân sách, Mục khác), thanh tiêu đề trên cùng có chuông và bánh răng.
@@ -38,8 +38,10 @@ Mỗi lần sửa code, tăng số phiên bản `V` trong sw.js (hiện là `sw-
 ## Bản contract V3 cho demo UniHack
 - `StudentGroupVaultV2.sol` và địa chỉ hiện tại vẫn được giữ để tương thích. V2 chưa xác thực thành viên on-chain và chưa chặn trùng theo mã khoản chi.
 - `StudentGroupVaultV3.sol` bổ sung đăng ký nhóm bằng chữ ký của ví trưởng nhóm, danh sách ví thành viên được phép, và khóa `expenseKey` để chặn yêu cầu hoàn trùng cho cùng một khoản chi.
-- Đã deploy V3 lên Avalanche Fuji: `0xfcCc67Dd8642640F4b17981aF349b4C092252F21`. Địa chỉ đã được điền vào `CONTRACT_ADDRESS_V3`; phiên bản cache hiện là `sw-v23`.
+- Đã deploy V3 lên Avalanche Fuji: `0xfcCc67Dd8642640F4b17981aF349b4C092252F21`. Địa chỉ đã được điền vào `CONTRACT_ADDRESS_V3`; mã nguồn hiện dùng cache `sw-v26`.
 - Mỗi thành viên cần lưu ví nhận tiền. Trưởng nhóm kết nối đúng ví đã lưu và bấm **Đăng ký / đồng bộ ví thành viên trên Fuji**. Tất cả thành viên trong danh sách phải có địa chỉ ví hợp lệ trước lần đăng ký đầu tiên.
-- V3 là contract mới, không tự nhận số dư hoặc yêu cầu từ V2. Chỉ dùng AVAX test trên Fuji trong demo. Cần hoàn tất giao dịch demo từ app trước khi khẳng định luồng chạy đầu-cuối.
+- V3 là contract mới, không tự nhận số dư hoặc yêu cầu từ V2. Chỉ dùng AVAX test trên Fuji trong demo.
+- Đã demo trên Fuji: đồng bộ ví thành viên, góp 0.031 AVAX, tạo yêu cầu hoàn 20,000 VND (0.030769 AVAX), duyệt 1/1 và chuyển tiền thành công. Lần demo có 1 thành viên góp quỹ nên ngưỡng duyệt là 1; cần thêm ví thành viên thứ hai để minh họa duyệt đa chữ ký.
 - Bản `v26` sửa nhận diện ngày hóa đơn: chấp nhận ngày quá khứ, hiểu các dạng ngày ISO và ngày Việt Nam; nếu không đọc được ngày thì để trống để người dùng nhập, không tự ghi hôm nay.
+- Bản sửa ngày v26 đã nằm trong mã nguồn; cần xuất bản v26 lên Netlify để trang live nhận bản sửa này.
 
